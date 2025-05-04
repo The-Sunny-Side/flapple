@@ -6,9 +6,11 @@ import joblib
 from PIL import Image
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+import pandas as pd
 
 app = Flask(__name__)
 CORS(app)
+
 
 # ====== CARICAMENTO MODELLO E SCALER =================================================
 print("🔄 Caricamento modello e scaler...")
@@ -27,9 +29,8 @@ def preprocess_image(image_bytes):
     return np.expand_dims(arr, 0)
 
 def preprocess_features(feat_dict):
-    keys = ["size","crunchiness","juiciness","acidity","sweetness"]
-    raw = np.array([[feat_dict[k] for k in keys]], dtype="float32")
-    return scaler.transform(raw).astype("float32")
+    df = pd.DataFrame([feat_dict])
+    return scaler.transform(df).astype("float32")
 
 def predict(image_bytes, features_dict):
     img = preprocess_image(image_bytes)
@@ -54,6 +55,7 @@ def predict_endpoint():
         return jsonify({"error":"No image uploaded"}), 400
 
     image_bytes = request.files["image"].read()
+    print(f"📷 Image size: {len(image_bytes) / 1024:.2f} KB")
     features_raw = request.form.get("features")
     if not features_raw:
         return jsonify({"error":"Missing 'features'"}), 400
