@@ -75,6 +75,6 @@ def predict_endpoint():
         return jsonify({"error":f"Prediction failed: {e}"}), 500
 
 # ====== RUN =============================================================================
-if __name__ == "__main__":
-    # ascolta su tutte le interfacce
-    app.run(host="0.0.0.0", port=5001, debug=True)
+# if __name__ == "__main__":
+#     # ascolta su tutte le interfacce
+#     app.run(host="0.0.0.0", port=5001, debug=True)
