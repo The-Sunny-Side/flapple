@@ -19,12 +19,12 @@ CORS(app)
 @lru_cache(maxsize=1)
 def get_model():
     print("🔄 Caricamento modello...")
-    return tf.keras.models.load_model("apple-model.keras", compile=False)
+    return tf.keras.models.load_model("apple_model.keras", compile=False)
 
 @lru_cache(maxsize=1)
 def get_scaler():
     print("🔄 Caricamento scaler...")
-    return joblib.load("scaler.joblib")
+    return joblib.load("apple_scaler.joblib")
 
 def preprocess_image(image_bytes):
     img = Image.open(io.BytesIO(image_bytes)).convert("RGB")
